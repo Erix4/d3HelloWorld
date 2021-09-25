@@ -118,31 +118,56 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"src/index.js":[function(require,module,exports) {
-d3.select("div").style("width", d3.select("div").style("height"));
-d3.select("body").on("mousemove", function () {
-  var m = d3.mouse(this);
-  var box = d3.select("div");
-  th = d3.select("body").style("height"); //get screen height for coloring
-  //
+var body = d3.select("body");
+var screenHeight = parseInt(body.style("height"));
+var screenWidth = parseInt(body.style("width"));
+var colNum = 6; //number of squares in a column
 
-  box.transition(); //
+var divPx = screenHeight / colNum; //pixel size of container (originally)
 
-  var x1 = m[0] - parseInt(box.style('width')) / 2;
-  var y1 = m[1] - parseInt(box.style('height')) / 2; //
-  //console.log(y1 / parseInt(th) * 360);
+var rowNum = Math.ceil(screenWidth / divPx); //calculate max number of div in row + 1
 
-  box.style("left", "".concat(x1, "px")).style("top", "".concat(y1, "px"));
-  box.style("background-color", "hsl(".concat(y1 / parseInt(th) * 360, ", 100%, 50%)"));
-});
-d3.select("body").on("click", function () {
-  var m = d3.mouse(this);
-  var box = d3.select("div");
-  var w = parseInt(box.style("width")) * 1.5;
-  var h = parseInt(box.style("height")) * 1.5; //
+divPx = Math.floor(screenWidth / rowNum);
+var hI; //height index
 
-  var x1 = m[0] - w / 2;
-  var y1 = m[1] - h / 2;
-  d3.select("div").transition().duration(500).style("width", "".concat(w, "px")).style("height", "".concat(h, "px")).style("left", "".concat(x1, "px")).style("top", "".concat(y1, "px"));
+var lI; //length index
+
+for (var n = 0; n < colNum * rowNum; n++) {
+  //cycle through rows, then columns
+  lI = n % rowNum; //get length (x)
+
+  hI = (n - lI) / rowNum; //get height (y)
+  //console.log(`(${hI}, ${lI})`);
+
+  d3.select("body").insert("div").styles({
+    "width": "".concat(divPx / 20, "px"),
+    "height": "".concat(divPx / 20, "px"),
+    "left": "".concat(lI * divPx + 19 * divPx / 20 / 2, "px"),
+    "top": "".concat(hI * divPx + 19 * divPx / 20 / 2, "px"),
+    "background-color": "black",
+    'position': 'absolute'
+  }).attr("lI", lI).attr("hI", hI).transition().duration(5000).styles({
+    "width": "".concat(divPx, "px"),
+    "height": "".concat(divPx, "px"),
+    "left": "".concat(lI * divPx, "px"),
+    "top": "".concat(hI * divPx, "px")
+  });
+}
+
+d3.selectAll("div").on("mouseover", function () {
+  var tlI = d3.select(this).attr("lI");
+  var thI = d3.select(this).attr("hI");
+  d3.select(this).transition().duration(500).styles({
+    "width": "".concat(divPx / 20, "px"),
+    "height": "".concat(divPx / 20, "px"),
+    "left": "".concat(tlI * divPx + 19 * divPx / 20 / 2, "px"),
+    "top": "".concat(thI * divPx + 19 * divPx / 20 / 2, "px")
+  }).transition().duration(5000).styles({
+    "width": "".concat(divPx, "px"),
+    "height": "".concat(divPx, "px"),
+    "left": "".concat(tlI * divPx, "px"),
+    "top": "".concat(thI * divPx, "px")
+  });
 });
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];

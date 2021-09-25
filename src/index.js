@@ -1,31 +1,46 @@
-d3.select("div").style("width", d3.select("div").style("height"));
+let body = d3.select("body");
+let screenHeight = parseInt(body.style("height"));
+let screenWidth = parseInt(body.style("width"));
 
-d3.select("body").on("mousemove", function(){
-    var m = d3.mouse(this);
-    var box = d3.select("div");
-    th = d3.select("body").style("height");//get screen height for coloring
-    //
-    box.transition();
-    //
-    var x1 = m[0] - (parseInt(box.style('width')) / 2);
-    var y1 = m[1] - (parseInt(box.style('height')) / 2);
-    //
-    //console.log(y1 / parseInt(th) * 360);
-    box.style("left", `${x1}px`).style("top", `${y1}px`);
-    box.style("background-color", `hsl(${y1 / parseInt(th) * 360}, 100%, 50%)`)
-});
+let colNum = 6;//number of squares in a column
 
-d3.select("body").on("click", function(){
-    var m = d3.mouse(this);
-    var box = d3.select("div");
-    let w = parseInt(box.style("width")) * 1.5;
-    let h = parseInt(box.style("height")) * 1.5;
-    //
-    var x1 = m[0] - (w / 2);
-    var y1 = m[1] - (h / 2);
-    d3.select("div").transition().duration(500)
-        .style("width", `${w}px`)
-        .style("height", `${h}px`)
-        .style("left", `${x1}px`)
-        .style("top", `${y1}px`);
+var divPx = screenHeight / colNum;//pixel size of container (originally)
+var rowNum = Math.ceil(screenWidth / divPx);//calculate max number of div in row + 1
+divPx = Math.floor(screenWidth / rowNum);
+
+var hI;//height index
+var lI;//length index
+for(var n = 0; n < (colNum * rowNum); n++){//cycle through rows, then columns
+    lI = n % rowNum;//get length (x)
+    hI = (n - lI) / rowNum;//get height (y)
+    //console.log(`(${hI}, ${lI})`);
+    d3.select("body").insert("div").styles({
+        "width": `${divPx / 20}px`,
+        "height": `${divPx / 20}px`,
+        "left": `${(lI * divPx) + ((19 * divPx / 20) / 2)}px`,
+        "top": `${(hI * divPx) + ((19 * divPx / 20) / 2)}px`,
+        "background-color": "black",
+        'position': 'absolute'
+    }).attr("lI", lI).attr("hI", hI).transition().duration(5000).styles({
+        "width": `${divPx}px`,
+        "height": `${divPx}px`,
+        "left": `${(lI * divPx)}px`,
+        "top": `${(hI * divPx)}px`
+    });
+}
+
+d3.selectAll("div").on("mouseover", function(){
+    let tlI = d3.select(this).attr("lI");
+    let thI = d3.select(this).attr("hI");
+    d3.select(this).transition().duration(500).styles({
+        "width": `${divPx / 20}px`,
+        "height": `${divPx / 20}px`,
+        "left": `${(tlI * divPx) + ((19 * divPx / 20) / 2)}px`,
+        "top": `${(thI * divPx) + ((19 * divPx / 20) / 2)}px`
+    }).transition().duration(5000).styles({
+        "width": `${divPx}px`,
+        "height": `${divPx}px`,
+        "left": `${(tlI * divPx)}px`,
+        "top": `${(thI * divPx)}px`
+    });
 });
