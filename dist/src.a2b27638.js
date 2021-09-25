@@ -121,11 +121,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 var body = d3.select("body");
 var screenHeight = parseInt(body.style("height"));
 var screenWidth = parseInt(body.style("width"));
-var colNum = 30; //number of squares in a column
+var colNum = 40; //number of squares in a column
 
 var divPx = screenHeight / colNum; //pixel size of container (originally)
 
-var rowNum = Math.ceil(screenWidth / divPx); //calculate max number of div in row + 1
+var rowNum = Math.ceil(screenWidth / divPx) + 1; //calculate max number of div in row + 1
 
 divPx = Math.floor(screenWidth / rowNum);
 var hI; //height index
@@ -140,19 +140,13 @@ for (var n = 0; n < colNum * rowNum; n++) {
   //console.log(`(${hI}, ${lI})`);
 
   d3.select("body").insert("div").styles({
-    "width": "".concat(divPx / 50, "px"),
-    "height": "".concat(divPx / 50, "px"),
-    "left": "".concat(lI * divPx + 49 * divPx / 50 / 2, "px"),
-    "top": "".concat(hI * divPx + 49 * divPx / 50 / 2, "px"),
-    "background-color": "white",
-    'position': 'absolute'
-  }).attr("lI", lI).attr("hI", hI).transition().duration(4000).styles({
     "width": "".concat(divPx, "px"),
     "height": "".concat(divPx, "px"),
     "left": "".concat(lI * divPx, "px"),
     "top": "".concat(hI * divPx, "px"),
-    "background-color": "black"
-  });
+    "background-color": "black",
+    'position': 'absolute'
+  }).attr("lI", lI).attr("hI", hI);
 }
 
 d3.selectAll("div").on("mouseover", function () {

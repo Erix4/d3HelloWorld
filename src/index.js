@@ -2,10 +2,10 @@ let body = d3.select("body");
 let screenHeight = parseInt(body.style("height"));
 let screenWidth = parseInt(body.style("width"));
 
-let colNum = 30;//number of squares in a column
+let colNum = 40;//number of squares in a column
 
 var divPx = screenHeight / colNum;//pixel size of container (originally)
-var rowNum = Math.ceil(screenWidth / divPx);//calculate max number of div in row + 1
+var rowNum = Math.ceil(screenWidth / divPx) + 1;//calculate max number of div in row + 1
 divPx = Math.floor(screenWidth / rowNum);
 
 var hI;//height index
@@ -15,19 +15,13 @@ for(var n = 0; n < (colNum * rowNum); n++){//cycle through rows, then columns
     hI = (n - lI) / rowNum;//get height (y)
     //console.log(`(${hI}, ${lI})`);
     d3.select("body").insert("div").styles({
-        "width": `${divPx / 50}px`,
-        "height": `${divPx / 50}px`,
-        "left": `${(lI * divPx) + ((49 * divPx / 50) / 2)}px`,
-        "top": `${(hI * divPx) + ((49 * divPx / 50) / 2)}px`,
-        "background-color": "white",
-        'position': 'absolute'
-    }).attr("lI", lI).attr("hI", hI).transition().duration(4000).styles({
         "width": `${divPx}px`,
         "height": `${divPx}px`,
         "left": `${(lI * divPx)}px`,
         "top": `${(hI * divPx)}px`,
-        "background-color": "black"
-    });
+        "background-color": "black",
+        'position': 'absolute'
+    }).attr("lI", lI).attr("hI", hI);
 }
 
 d3.selectAll("div").on("mouseover", function(){
