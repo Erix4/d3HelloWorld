@@ -121,7 +121,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 var body = d3.select("body");
 var screenHeight = parseInt(body.style("height"));
 var screenWidth = parseInt(body.style("width"));
-var colNum = 6; //number of squares in a column
+var colNum = 30; //number of squares in a column
 
 var divPx = screenHeight / colNum; //pixel size of container (originally)
 
@@ -140,17 +140,18 @@ for (var n = 0; n < colNum * rowNum; n++) {
   //console.log(`(${hI}, ${lI})`);
 
   d3.select("body").insert("div").styles({
-    "width": "".concat(divPx / 20, "px"),
-    "height": "".concat(divPx / 20, "px"),
-    "left": "".concat(lI * divPx + 19 * divPx / 20 / 2, "px"),
-    "top": "".concat(hI * divPx + 19 * divPx / 20 / 2, "px"),
-    "background-color": "black",
+    "width": "".concat(divPx / 50, "px"),
+    "height": "".concat(divPx / 50, "px"),
+    "left": "".concat(lI * divPx + 49 * divPx / 50 / 2, "px"),
+    "top": "".concat(hI * divPx + 49 * divPx / 50 / 2, "px"),
+    "background-color": "white",
     'position': 'absolute'
-  }).attr("lI", lI).attr("hI", hI).transition().duration(5000).styles({
+  }).attr("lI", lI).attr("hI", hI).transition().duration(4000).styles({
     "width": "".concat(divPx, "px"),
     "height": "".concat(divPx, "px"),
     "left": "".concat(lI * divPx, "px"),
-    "top": "".concat(hI * divPx, "px")
+    "top": "".concat(hI * divPx, "px"),
+    "background-color": "black"
   });
 }
 
@@ -158,17 +159,19 @@ d3.selectAll("div").on("mouseover", function () {
   var tlI = d3.select(this).attr("lI");
   var thI = d3.select(this).attr("hI");
   d3.select(this).transition().duration(500).styles({
-    "width": "".concat(divPx / 20, "px"),
-    "height": "".concat(divPx / 20, "px"),
-    "left": "".concat(tlI * divPx + 19 * divPx / 20 / 2, "px"),
-    "top": "".concat(thI * divPx + 19 * divPx / 20 / 2, "px")
-  }).transition().duration(5000).styles({
+    "width": "".concat(divPx / 50, "px"),
+    "height": "".concat(divPx / 50, "px"),
+    "left": "".concat(tlI * divPx + 49 * divPx / 50 / 2, "px"),
+    "top": "".concat(thI * divPx + 49 * divPx / 50 / 2, "px"),
+    "background-color": "white"
+  }).transition().duration(4000).styles({
     "width": "".concat(divPx, "px"),
     "height": "".concat(divPx, "px"),
     "left": "".concat(tlI * divPx, "px"),
-    "top": "".concat(thI * divPx, "px")
+    "top": "".concat(thI * divPx, "px"),
+    "background-color": "black"
   });
-});
+}); //yo
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
