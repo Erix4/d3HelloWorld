@@ -125,9 +125,9 @@ var colNum = 40; //number of squares in a column
 
 var divPx = screenHeight / colNum; //pixel size of container (originally)
 
-var rowNum = Math.ceil(screenWidth / divPx) + 1; //calculate max number of div in row + 1
+var rowNum = Math.ceil(screenWidth / divPx); //calculate max number of div in row + 1
 
-divPx = Math.floor(screenWidth / rowNum);
+divPx = screenWidth / rowNum;
 var hI; //height index
 
 var lI; //length index
@@ -149,7 +149,8 @@ for (var n = 0; n < colNum * rowNum; n++) {
   }).attr("lI", lI).attr("hI", hI);
 }
 
-d3.selectAll("div").on("mouseover", function () {
+d3.selectAll("div").on("mousemove", function () {
+  console.log(d3.event.pageX);
   var tlI = d3.select(this).attr("lI");
   var thI = d3.select(this).attr("hI");
   d3.select(this).transition().duration(500).styles({
